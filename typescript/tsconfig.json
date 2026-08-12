@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2022", //version
+    "module": "nodenext", // sistema de modulos
+    "moduleResolution": "nodenext",
+    "strict": true, //activa los cheques estrictos(preguntar q es eso)
+    "noEmit": true, //preguntar
+    "erasableSyntaxOnly": true, //prohibe el uso de sint q no se pueden borrar
+    "allowImportingTsExtensions": true, //permite importaciones de archivos ts
+    "skipLibCheck": true //no verifica los tipos de las devs (preg para q sirve)
+  }
+}
