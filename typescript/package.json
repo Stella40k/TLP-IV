@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ejercicio1": "node --experimental-strip-types ejercicio1.ts",
+    "ejercicio2": "node --experimental-strip-types ejercicio2.ts",
+    "ejercicio3": "node --experimental-strip-types ejercicio3.ts",
+    "ejercicio4": "node --experimental-strip-types ejercicio4.ts",
+    "ejercicio5": "node --experimental-strip-types ejercicio5.ts"
   },
   "keywords": [],
   "author": "",
