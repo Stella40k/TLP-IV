@@ -52,30 +52,45 @@ const teclado = new Producto("Teclado mecanico", 100, "Electronica", 5);
 
 console.log("Descripcion del producto:", teclado.describir());
 
-//class Persona {
-//  nombre: string;
-/*  edad: number;
-  constructor(nombre: string, edad: number) {
-    this.nombre = nombre;
-    this.edad = edad;
-  }
-  saludar(): string {
-    return `Hola, mi nombre es ${this.nombre} y tengo ${this.edad} años.`;
-  }
-}
+//prueba de descuento con el 20%
+console.log("Precio con descuento del 20%:", teclado.aplicarDescuento(20));
+console.log(`Precio original: $${teclado.precio}`);
+
+//prueba de venta de unidades
+console.log(
+  "Stock disponible para vender 3 unidades:",
+  teclado.stockDisponible(3),
+);
 try {
-  //constancia objetos
-  const persona1 = new Persona("stella", 22);
-  const persona2 = new Persona("chihiro", 6);
-
-  //se muestra en consola
-  console.log("ejercicio1");
-  console.log("Datos de la persona 1:", persona1);
-  console.log("Datos de la persona 2:", persona2);
-
-  console.log(persona1.saludar());
-  console.log(persona2.saludar());
+  teclado.venderUnidades(1);
+  console.log("Stock restante después de la venta:", teclado.stock);
 } catch (error) {
   console.error("Error:", error);
 }
-  */
+
+// //class Persona {
+// //  nombre: string;
+// edad: number;
+//   constructor(nombre: string, edad: number) {
+//     this.nombre = nombre;
+//     this.edad = edad;
+//   }
+//   saludar(): string {
+//     return `Hola, mi nombre es ${this.nombre} y tengo ${this.edad} años.`;
+//   }
+// }
+// try {
+//   //constancia objetos
+//   const persona1 = new Persona("stella", 22);
+//   const persona2 = new Persona("chihiro", 6);
+
+//   //se muestra en consola
+//   console.log("ejercicio1");
+//   console.log("Datos de la persona 1:", persona1);
+//   console.log("Datos de la persona 2:", persona2);
+
+//   console.log(persona1.saludar());
+//   console.log(persona2.saludar());
+// } catch (error) {
+//   console.error("Error:", error);
+// }
