@@ -24,7 +24,7 @@ class Empleado {
   //gracias al polimorfismo "this.calcularSueldo()" llamara a la formula
   //correcta dependiendo del tipo de empleado q sea
   describir(): string {
-    return `${this.nombre} (${this.antiguedad} años) - sueldo: $${this.calcularSueldo}`;
+    return `${this.nombre} ${this.antiguedad} años - sueldo: $${this.calcularSueldo()}`;
   }
 }
 
@@ -45,3 +45,13 @@ class EmpleadoFijo extends Empleado {
     return this.sueldoBase + bonoPorAntiguedad;
   }
 }
+
+//priuebas
+
+console.log("\n---Carga de empleado base---");
+const empleado = new Empleado("CHaru", 7);
+console.log(empleado.describir());
+
+console.log("\n---Carga de empleado fijo.---");
+const empleadoFijo = new EmpleadoFijo("Chihiro", 7, 100000);
+console.log(empleadoFijo.describir());
