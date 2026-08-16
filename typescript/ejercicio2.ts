@@ -57,3 +57,23 @@ console.log("---Creando cuenta..---");
 const miCuenta = new CuentaBAncaria("Chihiro", 10000);
 console.log(`Titular: ${miCuenta.titular}`);
 console.log(`Saldo: $${miCuenta.consultarSaldo()} pesos.`);
+
+//transacciones
+console.log("\n---Realizando transaccion---");
+miCuenta.deposito(2000);
+console.log("\n---Transaccion exitosa---");
+console.log(miCuenta.consultarSaldo());
+
+miCuenta.retirar(1500);
+console.log("\n---Retiro exitoso.---");
+console.log(`Saldo disponible: $${miCuenta.consultarSaldo()}`);
+
+//movimientos para comprobar el historial
+console.log("\n---Realizando transaccion---");
+miCuenta.deposito(5000);
+console.log("\n---Transaccion exitosa---");
+console.log(miCuenta.consultarSaldo());
+
+miCuenta.retirar(1700);
+console.log("\n---Retiro exitoso.---");
+console.log(`Saldo disponible: $${miCuenta.consultarSaldo()}`);
