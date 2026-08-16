@@ -77,3 +77,36 @@ console.log(miCuenta.consultarSaldo());
 miCuenta.retirar(1700);
 console.log("\n---Retiro exitoso.---");
 console.log(`Saldo disponible: $${miCuenta.consultarSaldo()}`);
+
+//historial
+console.log("\n---Historial de movimientos.---");
+//obtengo el hist
+const historialUsuario = miCuenta.obtenerHistorial();
+console.log(historialUsuario);
+
+//pruebas de aislamiento
+historialUsuario.push("deposito falso: +$99999");
+console.log("Intento de inyeccion");
+
+// Verificamos si el historial real de la cuenta fue alterado
+console.log("Historial REAL de la cuenta:");
+console.log(miCuenta.obtenerHistorial());
+
+//prueba de errores
+console.log("\n---Errores.---");
+try {
+  miCuenta.retirar(800000); //prueba de so supera el saldo
+} catch (error) {
+  if (error instanceof Error) {
+    //instanceof valida si la cariable pertenece a una clase especif.
+    console.error("Error atrapado;", error.message);
+  }
+}
+
+try {
+  miCuenta.deposito(-500);
+} catch (error) {
+  if (error instanceof Error) {
+    console.error("Error atrapado: ", error.message);
+  }
+}
