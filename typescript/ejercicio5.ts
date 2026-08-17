@@ -88,3 +88,31 @@ class Persona {
 }
 
 //pruebas
+console.log("--- Creacion de persona ---");
+const usuario = new Persona("46153403", "Chihi", 7, "gorda@gmail.com");
+console.log(usuario.datosPublicos); // Perfil: chihi - Mayor de edad
+
+console.log("\n--- Modificando datos usando Setters ---");
+//llama internamente al 'set edad'
+usuario.edad = 30;
+console.log(`Nueva edad de chihi: ${usuario.edad}`); //  llama al 'get edad'
+
+console.log("\n--- Pruebas de seguridad (Errores) ---");
+
+try {
+  console.log("Intentando poner edad negativa...");
+  usuario.edad = -5; // el setter intercepta esto y lanza el error
+} catch (error) {
+  if (error instanceof Error) {
+    console.error("Interceptado:", error.message);
+  }
+}
+
+try {
+  console.log("Intentando poner un correo sin arroba...");
+  usuario.email = "gorda.com"; // el setter intercepta esto
+} catch (error) {
+  if (error instanceof Error) {
+    console.error("Interceptado:", error.message);
+  }
+}
