@@ -1,6 +1,7 @@
 import { Ticket } from "../models";
 import { ITicketRepository } from "../repositories/interfaces/ITicketRepository";
 import { TicketCategory, TicketPriority, TicketStatus } from "../types";
+import { ISubject, TicketStatusChangedEvent } from "../observer/ISubject";
 
 export interface CreateTicketDTO {
   title: string;
@@ -20,7 +21,10 @@ export interface UpdateTicketDTO {
 }
 
 export class TicketService {
-  constructor(private readonly ticketRepository: ITicketRepository) {}
+  constructor(
+    private readonly ticketRepository: ITicketRepository,
+    private readonly eventPublisher?: ISubject<TicketStatusChangedEvent>,
+  ) {}
 
   public async createTicket(dto: CreateTicketDTO): Promise<Ticket> {
     return await this.ticketRepository.create({
@@ -46,13 +50,37 @@ export class TicketService {
     return await this.ticketRepository.update(id, data);
   }
 
+  /**
+   * Cambia el estado del ticket y dispara el evento en el Observer (EventPublisher)
+   */
   public async changeStatus(
     ticketId: number,
     newStatus: TicketStatus,
-    _changedByUserId?: number,
+    changedByUserId?: number,
   ): Promise<Ticket | null> {
+    const currentTicket = await this.ticketRepository.findById(ticketId);
+    if (!currentTicket) return null;
+
+    const previousStatus = currentTicket.status;
+    if (previousStatus === newStatus) {
+      return currentTicket;
+    }
+
     const updated = await this.ticketRepository.updateStatus(ticketId, newStatus);
-    // Nota: en RF5 se conectará aquí el EventPublisher (Observer)
+    if (!updated) return null;
+
+    // Disparar evento a todos los observadores registrados
+    if (this.eventPublisher) {
+      await this.eventPublisher.notify({
+        ticketId: updated.id,
+        ticketTitle: updated.title,
+        previousStatus,
+        newStatus,
+        changedByUserId,
+        timestamp: new Date(),
+      });
+    }
+
     return updated;
   }
 
