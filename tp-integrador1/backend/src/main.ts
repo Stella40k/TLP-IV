@@ -18,17 +18,20 @@ import { NotificationService } from "./services/NotificationService";
 
 // Services
 import { AuthService } from "./services/AuthService";
+import { UserService } from "./services/UserService";
 import { TicketService } from "./services/ticket.service";
 import { SubscriptionService } from "./services/SubscriptionService";
 
 // Controllers
 import { AuthController } from "./controllers/AuthController";
+import { UserController } from "./controllers/UserController";
 import { TicketController } from "./controllers/ticket.controller";
 import { SubscriptionController } from "./controllers/SubscriptionController";
 import { NotificationController } from "./controllers/NotificationController";
 
 // Routes
 import { createAuthRoutes } from "./routes/auth.routes";
+import { createUserRoutes } from "./routes/user.routes";
 import { createTicketRoutes } from "./routes/ticket.routes";
 import { createSubscriptionRoutes } from "./routes/subscription.routes";
 import { createNotificationRoutes } from "./routes/notification.routes";
@@ -68,6 +71,7 @@ eventPublisher.attach(notificationService);
 
 // 5. Servicios de negocio
 const authService = new AuthService(userRepository);
+const userService = new UserService(userRepository);
 const ticketService = new TicketService(ticketRepository, eventPublisher);
 const subscriptionService = new SubscriptionService(
   subscriptionRepository,
@@ -76,12 +80,14 @@ const subscriptionService = new SubscriptionService(
 
 // 6. Controladores
 const authController = new AuthController(authService);
+const userController = new UserController(userService);
 const ticketController = new TicketController(ticketService);
 const subscriptionController = new SubscriptionController(subscriptionService);
 const notificationController = new NotificationController(notificationRepository);
 
 // 7. Montaje de rutas
 app.use("/api/auth", createAuthRoutes(authController));
+app.use("/api/users", createUserRoutes(userController));
 app.use("/api/tickets", createTicketRoutes(ticketController));
 app.use("/api/subscriptions", createSubscriptionRoutes(subscriptionController));
 app.use("/api/notifications", createNotificationRoutes(notificationController));
