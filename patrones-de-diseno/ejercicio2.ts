@@ -1,10 +1,14 @@
 //clase abstracta madre
 abstract class Equipo {
-  constructor(
-    protected nombre: string,
-    protected ram: string,
-    protected procesador: string,
-  ) {}
+  protected nombre: string;
+  protected ram: string;
+  protected procesador: string;
+
+  constructor(nombre: string, ram: string, procesador: string) {
+    this.nombre = nombre;
+    this.ram = ram;
+    this.procesador = procesador;
+  }
 
   //metodo abstracto q obligada a cada clase hija sus detalles
   abstract detalles(): string;

@@ -13,13 +13,16 @@ class Soporte implements Observador {
 }
 
 class Equipo {
+  public nombre: string;
+  public tipo: string;
+  public estado: string;
   private observadores: Observador[] = [];
 
-  constructor(
-    public nombre: string,
-    public tipo: string,
-    public estado: string,
-  ) {}
+  constructor(nombre: string, tipo: string, estado: string) {
+    this.nombre = nombre;
+    this.tipo = tipo;
+    this.estado = estado;
+  }
 
   //permite subscribir observadores a la lista
   agregarObservador(observador: Observador): void {
