@@ -1,6 +1,6 @@
-export type UserRole = "CLIENT" | "SUPPORT" | "ADMIN";
-export type TicketPriority = "LOW" | "MEDIUM" | "HIHG" | "CRITICAL";
-export type TicketStatus = "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
+export type UserRole = "admin" | "operador" | "usuario";
+export type TicketPriority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+export type TicketStatus = "ABIERTO" | "EN_PROGRESO" | "RESUELTO" | "CERRADO";
 export type TicketCategory = "HARDWARE" | "SOFTWARE" | "NETWORK" | "ACCESS";
 
 export interface IUserAttributes {

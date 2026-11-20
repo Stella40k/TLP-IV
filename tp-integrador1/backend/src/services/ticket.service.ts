@@ -30,7 +30,7 @@ export class TicketService {
 
     const newTicket = await Ticket.create({
       ...ticketData,
-      status: "OPEN",
+      status: "ABIERTO",
     });
     return newTicket;
   }
@@ -71,7 +71,7 @@ export class TicketService {
     });
 
     //dispara el adapter del sms en casos criticos
-    if (ticket.priority === "CRITICAL" || newStatus === "RESOLVED") {
+    if (ticket.priority === "CRITICAL" || newStatus === "RESUELTO") {
       await this.smsNotifier.sendNotification(
         "+5493718537071",
         `El ticket #${ticket.id} cambio a ${newStatus}`,
