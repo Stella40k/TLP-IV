@@ -16,14 +16,19 @@ class SimplePrinter implements Printer {
   print(document: string): void {
     console.log(`Imprimiendo: ${document}`);
   }
+}
 
-  //// scan(_document: string): void {
-  //   throw new Error("Esta impresora no puede escanear");
-  // }
-
-  // fax(_document: string): void {
-  //   throw new Error("Esta impresora no puede enviar fax");
-  // }
+// Opcional: una impresora multifuncion que si use todas las interfaces
+class MultiFunctionMachine implements Printer, Scanner, Fax {
+  print(document: string): void {
+    console.log(`Imprimiendo multifunción: ${document}`);
+  }
+  scan(document: string): void {
+    console.log(`Escaneando: ${document}`);
+  }
+  fax(document: string): void {
+    console.log(`Enviando fax: ${document}`);
+  }
 }
 
 new SimplePrinter().print("tarea.txt");

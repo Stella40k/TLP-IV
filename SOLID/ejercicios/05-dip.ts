@@ -29,11 +29,10 @@ new OrderService(notificador).createOrder("chihi@gorda.com");
 // Preguntas:
 
 // Que dependencia concreta crea OrderService?
-// crea la dependencia de EmailSender q es una clase de bajo nivel de la cual no se debe
-// depender directamente
+// Crea la dependencia con EmailSender directamente en su metodo createOrder con 'new EmailSender()'.
 
 // Como probarias la clase sin enviar un correo?
-// con un mok pero no sabria bien como explicar ya que no probe y no use todavia
+// Creando una clase 'MockNotifier implements Notifier' (o un doble de prueba) que solo registre las llamadas en memoria en lugar de enviar correos reales, y pasándosela a OrderService por constructor.
 
 // Que contrato comun podrian implementar el correo y el SMS?
-// se podria implementar una interface de notificador q tenga un metodo
+// La interfaz Notifier con el metodo send(to: string, message: string): void. Tanto EmailSender como SMSSender pueden implementarla.

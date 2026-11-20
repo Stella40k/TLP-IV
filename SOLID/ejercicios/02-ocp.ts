@@ -1,44 +1,48 @@
-type PaymentType = "card" | "cash" | "transfer";
+// Interfaz comun para todos los metodos de pago
+interface PaymentMethod {
+  pay(amount: number): void;
+}
 
+// Clases concretas por cada medio de pago
+class CardPayment implements PaymentMethod {
+  pay(amount: number): void {
+    console.log(`Pagando $${amount} con tarjeta`);
+  }
+}
+
+class CashPayment implements PaymentMethod {
+  pay(amount: number): void {
+    console.log(`Pagando $${amount} en efectivo`);
+  }
+}
+
+class TransferPayment implements PaymentMethod {
+  pay(amount: number): void {
+    console.log(`Pagando $${amount} con transferencia`);
+  }
+}
+
+// PaymentProcessor ahora delega en el medio de pago recibido y está cerrado a modificación
 class PaymentProcessor {
-  pay(type: PaymentType, amount: number): void {}
-}
-class PayWhitCard implements PaymentProcessor {
-  pay(type: PaymentType, amount: number): void {
-    type = "card";
-    console.log(`Pagando ccon tarjeta ${amount} `);
+  pay(method: PaymentMethod, amount: number): void {
+    method.pay(amount);
   }
 }
 
-class PayWhitCash implements PaymentProcessor {
-  pay(type: PaymentType, amount: number): void {
-    ((type = "cash"), console.log(`Pagando con efectivo ${amount}`));
-  }
-}
-class Transfer {
-  pay(type: PaymentType, amount: number): void {
-    type = "transfer";
-    console.log(`Pagando con transferencia ${amount}`);
-  }
-}
-const paymentProcessor = new PaymentProcessor().pay("card", 100);
-//amount es la cantidad
-const tarjeta = new PayWhitCard();
-tarjeta.pay("card", 12600);
-const efectivo = new PayWhitCash();
-efectivo.pay("cash", 150000);
-const mp = new Transfer();
-mp.pay("transfer", 200000);
+// Pruebas
+const processor = new PaymentProcessor();
+
+processor.pay(new CardPayment(), 12600);
+processor.pay(new CashPayment(), 150000);
+processor.pay(new TransferPayment(), 200000);
 
 // Preguntas:
 
 // Que parte debe modificarse para agregar pago con transferencia?
-// se debe crear una nuefa clase que implementa la interface paymentprocess y
-// se debe agregar un metodo pay q recibe el tipo de pago y el monto
+// No se modifica PaymentProcessor. Simplemente se crea una nueva clase que implemente PaymentMethod (ej: TransferPayment).
 
 // Como podriamos representar un medio de pago?
-// se podria representar como una interface que tenga un metodo pay
-//  que reciba el tipo de pago y el monto
+// Mediante una interfaz (PaymentMethod) con un metodo comun pay(amount: number).
 
 // Que comportamiento comun tienen todos los medios de pago?
-// todos los medios de pago tienen un metodo pay que recibe el tipo de pago y el monto
+// Todos reciben un monto y ejecutan la accion de cobro/pago correspondiente.

@@ -25,22 +25,18 @@ class Rectangle implements Shape {
 }
 
 class Square implements Shape {
-  protected width: number;
-  protected height: number;
+  protected side: number;
 
-  constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
+  constructor(side: number) {
+    this.side = side;
   }
 
-  setWidth(width: number): void {
-    this.width = width;
+  setSide(side: number): void {
+    this.side = side;
   }
-  setHeight(height: number): void {
-    this.height = height;
-  }
+
   area(): number {
-    return this.width * this.height;
+    return this.side * this.side;
   }
 }
 
