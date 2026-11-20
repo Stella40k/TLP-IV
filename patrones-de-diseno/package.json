@@ -1,0 +1,30 @@
+{
+  "name": "patrones_de_dise-o",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ej1": "tsx ejercicio1.ts",
+    "ej2": "tsx ejercicio2.ts",
+    "ej3": "tsx ejercicio3.ts",
+    "ej4": "tsx ejercicio4.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stella40k/patrones_de_dise-o.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Stella40k/patrones_de_dise-o/issues"
+  },
+  "homepage": "https://github.com/Stella40k/patrones_de_dise-o#readme",
+  "devDependencies": {
+    "@types/node": "^26.3.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
