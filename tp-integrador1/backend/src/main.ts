@@ -9,6 +9,10 @@ import { TicketRepository } from "./repositories/TicketRepository";
 import { TicketService } from "./services/ticket.service";
 import { TicketController } from "./controllers/ticket.controller";
 import { createTicketRoutes } from "./routes/ticket.routes";
+import { SubscriptionRepository } from "./repositories/SubscriptionRepository";
+import { SubscriptionService } from "./services/SubscriptionService";
+import { SubscriptionController } from "./controllers/SubscriptionController";
+import { createSubscriptionRoutes } from "./routes/subscription.routes";
 
 dotenv.config();
 
@@ -29,9 +33,18 @@ const ticketRepository = new TicketRepository();
 const ticketService = new TicketService(ticketRepository);
 const ticketController = new TicketController(ticketService);
 
+// 3. Subscriptions (RF4)
+const subscriptionRepository = new SubscriptionRepository();
+const subscriptionService = new SubscriptionService(
+  subscriptionRepository,
+  ticketRepository,
+);
+const subscriptionController = new SubscriptionController(subscriptionService);
+
 // Montar Rutas
 app.use("/api/auth", createAuthRoutes(authController));
 app.use("/api/tickets", createTicketRoutes(ticketController));
+app.use("/api/subscriptions", createSubscriptionRoutes(subscriptionController));
 
 app.get("/api/health", (_req, res) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
@@ -39,7 +52,7 @@ app.get("/api/health", (_req, res) => {
 
 async function bootstrap() {
   try {
-    console.log("Servidor inicializado correctamente con RF1, RF2 y RF3");
+    console.log("Servidor backend corriendo con RF1, RF2, RF3 y RF4");
     app.listen(PORT, () => {
       console.log(`Servidor backend escuchando en http://localhost:${PORT}`);
     });
