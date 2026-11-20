@@ -55,9 +55,9 @@ Ticket.init(
       defaultValue: "MEDIUM",
     },
     status: {
-      type: DataTypes.ENUM("OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"),
+      type: DataTypes.ENUM("ABIERTO", "EN_PROGRESO", "RESUELTO", "CERRADO"),
       allowNull: false,
-      defaultValue: "OPEN",
+      defaultValue: "ABIERTO",
     },
     creatorId: {
       type: DataTypes.INTEGER,

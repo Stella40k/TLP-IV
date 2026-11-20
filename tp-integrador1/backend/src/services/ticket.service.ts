@@ -1,83 +1,62 @@
-import { Ticket, User } from "../models";
-import { TicketFacktory } from "../patterns/factory/ticket.factory";
-import { ICreateTicketDTO } from "../patterns/factory/ticket.factory.types";
-import { TicketStatusSubject } from "../patterns/observer/ticket.subject";
-import {
-  AuditLogObserver,
-  EmailNotification,
-} from "../patterns/observer/observers";
-import { SmsAdapater } from "../patterns/adapter/sms.adapter";
-import { SmsService } from "../patterns/adapter/sms.service";
-import { TicketStatus } from "../types";
+import { Ticket } from "../models";
+import { ITicketRepository } from "../repositories/interfaces/ITicketRepository";
+import { TicketCategory, TicketPriority, TicketStatus } from "../types";
+
+export interface CreateTicketDTO {
+  title: string;
+  description: string;
+  category: TicketCategory;
+  priority?: TicketPriority;
+  creatorId: number;
+  assignedToId?: number | null;
+}
+
+export interface UpdateTicketDTO {
+  title?: string;
+  description?: string;
+  category?: TicketCategory;
+  priority?: TicketPriority;
+  assignedToId?: number | null;
+}
 
 export class TicketService {
-  private statusSubject: TicketStatusSubject;
-  private smsNotifier: SmsAdapater;
+  constructor(private readonly ticketRepository: ITicketRepository) {}
 
-  constructor() {
-    //inicio el observafor y le subscribo los observadores
-    this.statusSubject = new TicketStatusSubject();
-    this.statusSubject.subscribe(new AuditLogObserver());
-    this.statusSubject.subscribe(new EmailNotification());
-
-    //ahora inicializo el adapter para notificaciones por sms
-    this.smsNotifier = new SmsAdapater(new SmsService());
-  }
-
-  //creo el ticket aplicando el metodo factory
-  public async createTicket(dto: ICreateTicketDTO): Promise<Ticket> {
-    const ticketData = TicketFacktory.createTicketData(dto);
-
-    const newTicket = await Ticket.create({
-      ...ticketData,
+  public async createTicket(dto: CreateTicketDTO): Promise<Ticket> {
+    return await this.ticketRepository.create({
+      title: dto.title,
+      description: dto.description,
+      category: dto.category,
+      priority: dto.priority || "MEDIUM",
+      creatorId: dto.creatorId,
+      assignedToId: dto.assignedToId || null,
       status: "ABIERTO",
     });
-    return newTicket;
   }
 
-  //obtengo todos los tickets con datos del q lo creo
   public async getAllTickets(): Promise<Ticket[]> {
-    return await Ticket.findAll({
-      include: [
-        { model: User, as: "creator", attributes: ["id", "name", "email"] },
-      ],
-      order: [["createdAt", "DESC"]],
-    });
+    return await this.ticketRepository.findAll();
   }
 
-  //actualizacion del estado apluicando el patron observador y adapter
-  public async updateStatus(
+  public async getTicketById(id: number): Promise<Ticket | null> {
+    return await this.ticketRepository.findById(id);
+  }
+
+  public async updateTicket(id: number, data: UpdateTicketDTO): Promise<Ticket | null> {
+    return await this.ticketRepository.update(id, data);
+  }
+
+  public async changeStatus(
     ticketId: number,
     newStatus: TicketStatus,
-    changedByUserId: number,
+    _changedByUserId?: number,
   ): Promise<Ticket | null> {
-    //busca el ticket en la bd
-    const ticket = await Ticket.findByPk(ticketId);
-    if (!ticket) return null;
+    const updated = await this.ticketRepository.updateStatus(ticketId, newStatus);
+    // Nota: en RF5 se conectará aquí el EventPublisher (Observer)
+    return updated;
+  }
 
-    //guarda el estado viejo y actualiza el nuevo
-    const previusStatus = ticket.status;
-    ticket.status = newStatus;
-    await ticket.save();
-
-    //dispara dispara el evento del observer
-    await this.statusSubject.notify({
-      ticketId: ticket.id,
-      title: ticket.title,
-      previusStatus: previusStatus,
-      newStatus,
-      changeByUserId: changedByUserId,
-      timestamp: new Date(),
-    });
-
-    //dispara el adapter del sms en casos criticos
-    if (ticket.priority === "CRITICAL" || newStatus === "RESUELTO") {
-      await this.smsNotifier.sendNotification(
-        "+5493718537071",
-        `El ticket #${ticket.id} cambio a ${newStatus}`,
-      );
-    }
-    //devuewlvp eñ ticket actualizadp
-    return ticket;
+  public async deleteTicket(id: number): Promise<boolean> {
+    return await this.ticketRepository.delete(id);
   }
 }

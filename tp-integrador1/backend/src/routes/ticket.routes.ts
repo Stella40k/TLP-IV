@@ -1,10 +1,21 @@
 import { Router } from "express";
 import { TicketController } from "../controllers/ticket.controller";
+import { authenticate } from "../middlewares/authenticate";
+import { authorize } from "../middlewares/authorize";
 
-const router = Router();
+export function createTicketRoutes(ticketController: TicketController): Router {
+  const router = Router();
 
-router.post('/crearTicket', TicketController.create)
-router.get('/Tickets', TicketController.getAll)
-router.patch('/:id/statusTicket', TicketController.updateStatus)
+  // Todos los endpoints de tickets requieren autenticación
+  router.use(authenticate);
 
-export default router;
+  // RF3 - Permisos según rol
+  router.get("/", authorize("ticket:read"), ticketController.getAll);
+  router.get("/:id", authorize("ticket:read"), ticketController.getById);
+  router.post("/", authorize("ticket:create"), ticketController.create);
+  router.put("/:id", authorize("ticket:update"), ticketController.update);
+  router.patch("/:id/status", authorize("ticket:change-status"), ticketController.changeStatus);
+  router.delete("/:id", authorize("ticket:delete"), ticketController.delete);
+
+  return router;
+}
