@@ -1,0 +1,17 @@
+name: Pruebas automatizadas
+on: [push, pull_request] #se activa con cada push
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest #levanta la mv limpia de ubuntu donde se ejecutaran las pruebas
+    defaults:
+      run:
+        working-directory: demo_practica
+    steps:
+      - uses: actions/checkout@v4 #para obtener el codigo del repo
+      - uses: actions/setup-node@v4 #configura el entorno de node
+        with:
+          node-version: '24'
+      - run: npm ci #i las devs
+      - run: npm run typecheck #ejecuta typecheck
+      - run: npm test #ejecuta las pruebas
