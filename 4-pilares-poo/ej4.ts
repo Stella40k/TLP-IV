@@ -24,7 +24,7 @@ class Empleado {
   //gracias al polimorfismo "this.calcularSueldo()" llamara a la formula
   //correcta dependiendo del tipo de empleado q sea
   describir(): string {
-    return `${this.nombre} ${this.antiguedad} años - sueldo: $${this.calcularSueldo()}`;
+    return `${this.nombre} (${this.antiguedad} años) — sueldo: $${this.calcularSueldo()}`;
   }
 }
 
@@ -70,22 +70,22 @@ class EmpleadoPorHoras extends Empleado {
 
 class EmpleadoPorComision extends Empleado {
   private ventasDelMes: number;
-  private porcentajesPorComision: number;
+  private porcentajeComision: number;
 
   constructor(
     nombre: string,
     antiguedad: number,
     ventasDelMes: number,
-    porcentajesPorComision: number,
+    porcentajeComision: number,
   ) {
     super(nombre, antiguedad);
     this.ventasDelMes = ventasDelMes;
-    this.porcentajesPorComision = porcentajesPorComision;
+    this.porcentajeComision = porcentajeComision;
   }
 
   //reecribo el metodo
   calcularSueldo(): number {
-    return (this.ventasDelMes * this.porcentajesPorComision) / 100;
+    return (this.ventasDelMes * this.porcentajeComision) / 100;
   }
 }
 
@@ -111,9 +111,9 @@ const listaEmpleados: Empleado[] = [
 ];
 
 console.log("\n---Detalles individuales.---");
-//recorro el array llamando al metodos calcularSueldo si preguntar cual es cual
+//recorro el array llamando al metodo calcularSueldo sin preguntar cual es cual
 for (const empleado of listaEmpleados) {
-  console.log(empleado.describir());
+  console.log(`${empleado.describir()} | calcularSueldo(): $${empleado.calcularSueldo()}`);
 }
 
 console.log("\n---Calcula de nomina total---");

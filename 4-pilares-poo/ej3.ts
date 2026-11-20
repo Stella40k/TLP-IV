@@ -24,7 +24,7 @@ class Empleado {
   //gracias al polimorfismo "this.calcularSueldo()" llamara a la formula
   //correcta dependiendo del tipo de empleado q sea
   describir(): string {
-    return `${this.nombre} ${this.antiguedad} años - sueldo: $${this.calcularSueldo()}`;
+    return `${this.nombre} (${this.antiguedad} años) — sueldo: $${this.calcularSueldo()}`;
   }
 }
 

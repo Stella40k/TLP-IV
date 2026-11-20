@@ -1,6 +1,6 @@
 // Regla de trabajo: si npx tsc no está limpio, el código no está terminado.
 
-class CuentaBAncaria {
+class CuentaBancaria {
   //palabra clave readonly para indicar que el valor no puede ser modificado
   readonly titular: string;
   //private para proteger datos para que nadie los rompa o acceda, obliga a respetar las reglas del codiso
@@ -15,7 +15,7 @@ class CuentaBAncaria {
   }
 
   //metodo para depositar dinero en la cuenta
-  deposito(monto: number): void {
+  depositar(monto: number): void {
     if (monto <= 0) {
       throw new Error("El monto a depositar debe ser mayor a cero.");
     }
@@ -54,13 +54,13 @@ class CuentaBAncaria {
 
 //pruebass
 console.log("---Creando cuenta..---");
-const miCuenta = new CuentaBAncaria("Chihiro", 10000);
+const miCuenta = new CuentaBancaria("Chihiro", 10000);
 console.log(`Titular: ${miCuenta.titular}`);
 console.log(`Saldo: $${miCuenta.consultarSaldo()} pesos.`);
 
 //transacciones
 console.log("\n---Realizando transaccion---");
-miCuenta.deposito(2000);
+miCuenta.depositar(2000);
 console.log("\n---Transaccion exitosa---");
 console.log(miCuenta.consultarSaldo());
 
@@ -70,7 +70,7 @@ console.log(`Saldo disponible: $${miCuenta.consultarSaldo()}`);
 
 //movimientos para comprobar el historial
 console.log("\n---Realizando transaccion---");
-miCuenta.deposito(5000);
+miCuenta.depositar(5000);
 console.log("\n---Transaccion exitosa---");
 console.log(miCuenta.consultarSaldo());
 
@@ -104,7 +104,7 @@ try {
 }
 
 try {
-  miCuenta.deposito(-500);
+  miCuenta.depositar(-500);
 } catch (error) {
   if (error instanceof Error) {
     console.error("Error atrapado: ", error.message);

@@ -20,17 +20,17 @@ class Producto {
   describir(): string {
     return `${this.nombre} (${this.categoria}): $${this.precio} — ${this.stock} unidades`;
   }
-  stockDisponible(cantidad: number): boolean {
-    return cantidad <= this.stock;
+  hayStock(cantidad: number): boolean {
+    return cantidad > 0 && cantidad <= this.stock;
   }
 
   //verificacion del stock y aviso de error en caso de q no se cumpla
   venderUnidades(cantidad: number): void {
     //palabra clave q se usa para indicar funciones sin retonos de valor
-    if (this.stockDisponible(cantidad)) {
+    if (this.hayStock(cantidad)) {
       this.stock -= cantidad; //descuenta ddel stock original
       console.log(
-        `Venta conbcluida: Se vendieron ${cantidad} unidades de ${this.nombre}.`,
+        `Venta concluida: Se vendieron ${cantidad} unidades de ${this.nombre}.`,
       );
     } else {
       throw new Error("No hay suficiente stock para vender."); //dispara error si no hay suficiente stock
@@ -59,38 +59,21 @@ console.log(`Precio original: $${teclado.precio}`);
 //prueba de venta de unidades
 console.log(
   "Stock disponible para vender 3 unidades:",
-  teclado.stockDisponible(3),
+  teclado.hayStock(3),
 );
 try {
   teclado.venderUnidades(1);
   console.log("Stock restante después de la venta:", teclado.stock);
 } catch (error) {
-  console.error("Error:", error);
+  if (error instanceof Error) {
+    console.error("Error:", error.message);
+  }
 }
 
-// //class Persona {
-// //  nombre: string;
-// edad: number;
-//   constructor(nombre: string, edad: number) {
-//     this.nombre = nombre;
-//     this.edad = edad;
-//   }
-//   saludar(): string {
-//     return `Hola, mi nombre es ${this.nombre} y tengo ${this.edad} años.`;
-//   }
-// }
-// try {
-//   //constancia objetos
-//   const persona1 = new Persona("stella", 22);
-//   const persona2 = new Persona("chihiro", 6);
-
-//   //se muestra en consola
-//   console.log("ejercicio1");
-//   console.log("Datos de la persona 1:", persona1);
-//   console.log("Datos de la persona 2:", persona2);
-
-//   console.log(persona1.saludar());
-//   console.log(persona2.saludar());
-// } catch (error) {
-//   console.error("Error:", error);
-// }
+try {
+  teclado.venderUnidades(10);
+} catch (error) {
+  if (error instanceof Error) {
+    console.error("Error atrapado:", error.message);
+  }
+}
